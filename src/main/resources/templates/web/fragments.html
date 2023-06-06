@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<a th:fragment="pagination_link(moduleURL,pageNumber,iconClass)"
+   th:href="@{|${moduleURL}/page/${pageNumber}|}"
+   class="page-link border-0 rounded-circle round-32 mx-1 d-flex align-items-center justify-content-center">
+    <i th:class="${iconClass}"></i>
+</a>
+
+    <nav th:fragment="pagination(moduleURL)" aria-label="..." th:if="${totalPages >0}">
+        <ul class="pagination justify-content-center mb-0 mt-4">
+            <li class="page-item" th:if="${currentPage >1}">
+                <a th:replace="web/fragments :: pagination_link(${moduleURL},${currentPage -1},'ti ti-chevron-left')"></a>
+            </li>
+            <li class="page-item" aria-current="page" th:classappend="${currentPage == number} ? 'active' : ''"
+                th:each="number : ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link border-0 rounded-circle round-32 mx-1 d-flex align-items-center justify-content-center"
+                   th:href="@{|${moduleURL}/page/${number}|}">[[${number}]]</a>
+            </li>
+            <li class="page-item" th:if="${currentPage < totalPages}">
+                <a th:replace="web/fragments :: pagination_link(${moduleURL},${currentPage +1},'ti ti-chevron-right')">
+                </a>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>
